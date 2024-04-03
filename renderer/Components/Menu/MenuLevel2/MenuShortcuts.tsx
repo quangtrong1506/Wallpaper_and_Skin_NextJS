@@ -1,3 +1,5 @@
+"use client";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SIZE } from "../../../helpers/constant";
 import { sortShortcuts } from "../../../helpers/shortcuts";
@@ -7,9 +9,16 @@ interface IProps {
     x?: number;
     y?: number;
 }
-function MenuShortcuts(props: IProps) {
+function MenuShortcuts({ x, y }: IProps) {
     const dispatch = useDispatch();
     const SHORTCUTS = useAppSelector((state) => state.shortcutReducer);
+    const urRef = useRef<HTMLUListElement>();
+    const [main, setMain] = useState({ clientHeight: 0, clientWidth: 0 });
+    useEffect(() => {
+        let { clientHeight, clientWidth } = document.querySelector(".main");
+        setMain({ clientHeight, clientWidth });
+    }, []);
+
     const handleSetSize = (size: any) => {
         let newS = sortShortcuts({
             ...SHORTCUTS,
@@ -33,8 +42,18 @@ function MenuShortcuts(props: IProps) {
         });
         dispatch(setInitShortcut(newS.shortcuts));
     };
+    let style = {
+        left: main.clientWidth - x < 380 ? "-183px" : "183px",
+        top: main.clientHeight - y < 300 ? "-" + (300 - (main.clientHeight - y)) + "px" : "0",
+    };
+    console.log(style);
+
     return (
-        <ul className="absolute -right-[183px] z-40 bg-white w-full rounded shadow shadow-[black] py-1 top-0">
+        <ul
+            ref={urRef}
+            className="absolute z-40 bg-white w-full rounded shadow shadow-[black] py-1"
+            style={style}
+        >
             {Object.entries(SIZE).map((size, index) => {
                 return (
                     <li

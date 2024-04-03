@@ -28,7 +28,7 @@ export default function Menu() {
             <li className="relative cursor-pointer hover:bg-gray-100 px-3 py-[2px] text-xl max-xl:text-base">
                 <span>{TEXT.menu.view}</span>
                 <RightArrow />
-                <MenuShortcuts />
+                <MenuShortcuts x={1200} y={500} />
             </li>
             <li className="relative cursor-pointer hover:bg-gray-100 px-3 py-[2px] text-xl max-xl:text-base ">
                 {TEXT.menu.shortcuts}
